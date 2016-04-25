@@ -1,0 +1,42 @@
+<?php
+
+namespace IIT\ChampBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Heure
+ *
+ * @ORM\Table(name="heure", indexes={@ORM\Index(name="idDate", columns={"idDate"})})
+ * @ORM\Entity
+ */
+class Heure
+{
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="heure", type="time", nullable=false)
+     */
+    private $heure;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \IIT\ChampBundle\Entity\Date
+     *
+     * @ORM\ManyToOne(targetEntity="IIT\ChampBundle\Entity\Date")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idDate", referencedColumnName="id")
+     * })
+     */
+    private $iddate;
+
+
+}

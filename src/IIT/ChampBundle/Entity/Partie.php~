@@ -1,0 +1,65 @@
+<?php
+
+namespace IIT\ChampBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Partie
+ *
+ * @ORM\Table(name="partie", indexes={@ORM\Index(name="idEquipe", columns={"idEquipe"}), @ORM\Index(name="idStade", columns={"idStade"}), @ORM\Index(name="idCompetition", columns={"idCompetition"}), @ORM\Index(name="idDate", columns={"idDate"})})
+ * @ORM\Entity
+ */
+class Partie
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \IIT\ChampBundle\Entity\Date
+     *
+     * @ORM\ManyToOne(targetEntity="IIT\ChampBundle\Entity\Date")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idDate", referencedColumnName="id")
+     * })
+     */
+    private $iddate;
+
+    /**
+     * @var \IIT\ChampBundle\Entity\Competition
+     *
+     * @ORM\ManyToOne(targetEntity="IIT\ChampBundle\Entity\Competition")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idCompetition", referencedColumnName="id")
+     * })
+     */
+    private $idcompetition;
+
+    /**
+     * @var \IIT\ChampBundle\Entity\Stade
+     *
+     * @ORM\ManyToOne(targetEntity="IIT\ChampBundle\Entity\Stade")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idStade", referencedColumnName="id")
+     * })
+     */
+    private $idstade;
+
+    /**
+     * @var \IIT\ChampBundle\Entity\Equipe
+     *
+     * @ORM\ManyToOne(targetEntity="IIT\ChampBundle\Entity\Equipe")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idEquipe", referencedColumnName="id")
+     * })
+     */
+    private $idequipe;
+
+
+}
