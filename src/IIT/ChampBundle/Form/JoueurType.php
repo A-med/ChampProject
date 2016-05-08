@@ -21,7 +21,7 @@ class JoueurType extends AbstractType
             ->add('datenaiss')
             ->add('taille')
             ->add('poids')
-            ->add('image')
+            ->add('image','file',array('required'=> false,'label'=>'image :'))
             ->add('idequipe')
         ;
     }

@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use IIT\ChampBundle\Entity\Joueur;
 use IIT\ChampBundle\Form\JoueurType;
-
+use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Joueur controller.
  *
@@ -43,12 +43,19 @@ class JoueurController extends Controller
      * @Template("IITChampBundle:Joueur:new.html.twig")
      */
     public function createAction(Request $request)
-    {
+    {   $tab = explode(',',$_FILES['iit_champbundle_joueur']['name']['image']);
+        $ext = $tab[count($tab)-1];
         $entity = new Joueur();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+             $file = $entity->getImage();
+            $fileName = md5(uniqid()).'.'.$ext;
+            
+            $photoDir = $this->container->getParameter('kernel.root_dir').'/../web/uploads';
+            $file->move($photoDir,$fileName);
+            $entity->setImage($fileName);
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -61,7 +68,9 @@ class JoueurController extends Controller
             'form'   => $form->createView(),
         );
     }
-
+ 
+ 
+ 
     /**
      * Creates a form to create a Joueur entity.
      *
@@ -243,5 +252,31 @@ class JoueurController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    
+       /**
+     * Lists all Joueur entities.
+     *
+     * @Route("/index", name="home_root")
+     * @Method("GET")
+     * @Template("IITChampBundle:Home:home.html.twig")
+     */
+    
+        public function homeAction()
+    {
+       
+        $em = $this->getDoctrine()->getManager();
+
+        $joueurs = $em->getRepository('IITChampBundle:Joueur')->findAll();
+        $competition = $em->getRepository('IITChampBundle:Competition')->findAll();
+        $resultat = $em->getRepository('IITChampBundle:Resultat')->findAll();
+        $partie = $em->getRepository('IITChampBundle:Partie')->findAll();
+         $calandrier = $em->getRepository('IITChampBundle:Calendrier')->findAll();
+        return array(
+            'joueurs' => $joueurs,'competitions' => $competition,'resultats' => $resultat,
+            'parties' => $partie,'calendrier'=>$calandrier
+        );
+      
     }
 }

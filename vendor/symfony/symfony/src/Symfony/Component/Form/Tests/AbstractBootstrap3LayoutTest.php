@@ -162,7 +162,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     [@class="checkbox"]
     [
         ./label
-            [.="[trans]Name[/trans]"]
+            [.=" [trans]Name[/trans]"]
             [
                 ./input[@type="checkbox"][@name="name"][@id="my&id"][@class="my&class"][@checked="checked"][@value="1"]
             ]
@@ -180,7 +180,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     [@class="checkbox"]
     [
         ./label
-            [.="[trans]Name[/trans]"]
+            [.=" [trans]Name[/trans]"]
             [
                 ./input[@type="checkbox"][@name="name"][@id="my&id"][@class="my&class"][not(@checked)]
             ]
@@ -200,7 +200,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     [@class="checkbox"]
     [
         ./label
-            [.="[trans]Name[/trans]"]
+            [.=" [trans]Name[/trans]"]
             [
                 ./input[@type="checkbox"][@name="name"][@id="my&id"][@class="my&class"][@value="foo&bar"]
             ]
@@ -212,7 +212,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoice()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'multiple' => false,
             'expanded' => false,
         ));
@@ -231,10 +232,55 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
         );
     }
 
+    public function testSelectWithSizeBiggerThanOneCanBeRequired()
+    {
+        $form = $this->factory->createNamed('name', 'choice', null, array(
+            'choices' => array('a', 'b'),
+            'choices_as_values' => true,
+            'multiple' => false,
+            'expanded' => false,
+            'attr' => array('size' => 2),
+        ));
+
+        $this->assertWidgetMatchesXpath($form->createView(), array('attr' => array('class' => '')),
+'/select
+    [@name="name"]
+    [@required="required"]
+    [@size="2"]
+    [count(./option)=2]
+'
+        );
+    }
+
+    public function testSingleChoiceWithoutTranslation()
+    {
+        $form = $this->factory->createNamed('name', 'choice', '&a', array(
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
+            'multiple' => false,
+            'expanded' => false,
+            'choice_translation_domain' => false,
+        ));
+
+        $this->assertWidgetMatchesXpath($form->createView(), array('attr' => array('class' => 'my&class')),
+'/select
+    [@name="name"]
+    [@class="my&class form-control"]
+    [not(@required)]
+    [
+        ./option[@value="&a"][@selected="selected"][.="Choice&A"]
+        /following-sibling::option[@value="&b"][not(@selected)][.="Choice&B"]
+    ]
+    [count(./option)=2]
+'
+        );
+    }
+
     public function testSingleChoiceAttributes()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'choice_attr' => array('Choice&B' => array('class' => 'foo&bar')),
             'multiple' => false,
             'expanded' => false,
@@ -259,7 +305,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoiceWithPreferred()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'preferred_choices' => array('&b'),
             'multiple' => false,
             'expanded' => false,
@@ -283,7 +330,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoiceWithPreferredAndNoSeparator()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'preferred_choices' => array('&b'),
             'multiple' => false,
             'expanded' => false,
@@ -306,7 +354,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoiceWithPreferredAndBlankSeparator()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'preferred_choices' => array('&b'),
             'multiple' => false,
             'expanded' => false,
@@ -330,7 +379,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testChoiceWithOnlyPreferred()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'preferred_choices' => array('&a', '&b'),
             'multiple' => false,
             'expanded' => false,
@@ -347,7 +397,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoiceNonRequired()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'required' => false,
             'multiple' => false,
             'expanded' => false,
@@ -359,7 +410,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     [@class="my&class form-control"]
     [not(@required)]
     [
-        ./option[@value=""][.="[trans][/trans]"]
+        ./option[@value=""][.=""]
         /following-sibling::option[@value="&a"][@selected="selected"][.="[trans]Choice&A[/trans]"]
         /following-sibling::option[@value="&b"][not(@selected)][.="[trans]Choice&B[/trans]"]
     ]
@@ -371,7 +422,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoiceNonRequiredNoneSelected()
     {
         $form = $this->factory->createNamed('name', 'choice', null, array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'required' => false,
             'multiple' => false,
             'expanded' => false,
@@ -383,7 +435,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     [@class="my&class form-control"]
     [not(@required)]
     [
-        ./option[@value=""][.="[trans][/trans]"]
+        ./option[@value=""][.=""]
         /following-sibling::option[@value="&a"][not(@selected)][.="[trans]Choice&A[/trans]"]
         /following-sibling::option[@value="&b"][not(@selected)][.="[trans]Choice&B[/trans]"]
     ]
@@ -395,7 +447,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoiceNonRequiredWithPlaceholder()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'multiple' => false,
             'expanded' => false,
             'required' => false,
@@ -420,7 +473,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoiceRequiredWithPlaceholder()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'required' => true,
             'multiple' => false,
             'expanded' => false,
@@ -445,7 +499,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoiceRequiredWithPlaceholderViaView()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'required' => true,
             'multiple' => false,
             'expanded' => false,
@@ -457,7 +512,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     [@class="my&class form-control"]
     [@required="required"]
     [
-        ./option[@value=""][not(@selected)][not(@disabled)][.="[trans][/trans]"]
+        ./option[@value=""][not(@selected)][not(@disabled)][.=""]
         /following-sibling::option[@value="&a"][@selected="selected"][.="[trans]Choice&A[/trans]"]
         /following-sibling::option[@value="&b"][not(@selected)][.="[trans]Choice&B[/trans]"]
     ]
@@ -470,9 +525,10 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
             'choices' => array(
-                'Group&1' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
-                'Group&2' => array('&c' => 'Choice&C'),
+                'Group&1' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+                'Group&2' => array('Choice&C' => '&c'),
             ),
+            'choices_as_values' => true,
             'multiple' => false,
             'expanded' => false,
         ));
@@ -500,7 +556,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testMultipleChoice()
     {
         $form = $this->factory->createNamed('name', 'choice', array('&a'), array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'required' => true,
             'multiple' => true,
             'expanded' => false,
@@ -524,7 +581,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testMultipleChoiceAttributes()
     {
         $form = $this->factory->createNamed('name', 'choice', array('&a'), array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'choice_attr' => array('Choice&B' => array('class' => 'foo&bar')),
             'required' => true,
             'multiple' => true,
@@ -551,7 +609,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testMultipleChoiceSkipsPlaceholder()
     {
         $form = $this->factory->createNamed('name', 'choice', array('&a'), array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'multiple' => true,
             'expanded' => false,
             'placeholder' => 'Test&Me',
@@ -574,7 +633,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testMultipleChoiceNonRequired()
     {
         $form = $this->factory->createNamed('name', 'choice', array('&a'), array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'required' => false,
             'multiple' => true,
             'expanded' => false,
@@ -597,7 +657,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoiceExpanded()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'multiple' => false,
             'expanded' => true,
         ));
@@ -609,7 +670,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="radio"]
             [
                 ./label
-                    [.="[trans]Choice&A[/trans]"]
+                    [.=" [trans]Choice&A[/trans]"]
                     [
                         ./input[@type="radio"][@name="name"][@id="name_0"][@value="&a"][@checked]
                     ]
@@ -618,12 +679,172 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="radio"]
             [
                 ./label
-                    [.="[trans]Choice&B[/trans]"]
+                    [.=" [trans]Choice&B[/trans]"]
                     [
                         ./input[@type="radio"][@name="name"][@id="name_1"][@value="&b"][not(@checked)]
                     ]
             ]
-        /following-sibling::input[@type="hidden"][@id="name__token"][@class="form-control"]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
+    ]
+'
+        );
+    }
+
+    public function testSingleChoiceExpandedWithLabelsAsFalse()
+    {
+        $form = $this->factory->createNamed('name', 'choice', '&a', array(
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
+            'choice_label' => false,
+            'multiple' => false,
+            'expanded' => true,
+        ));
+
+        $this->assertWidgetMatchesXpath($form->createView(), array(),
+'/div
+    [
+        ./div
+            [@class="radio"]
+            [
+                ./label
+                    [
+                        ./input[@type="radio"][@name="name"][@id="name_0"][@value="&a"][@checked]
+                    ]
+            ]
+        /following-sibling::div
+            [@class="radio"]
+            [
+                ./label
+                    [
+                        ./input[@type="radio"][@name="name"][@id="name_1"][@value="&b"][not(@checked)]
+                    ]
+            ]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
+    ]
+'
+        );
+    }
+
+    public function testSingleChoiceExpandedWithLabelsSetByCallable()
+    {
+        $form = $this->factory->createNamed('name', 'choice', '&a', array(
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b', 'Choice&C' => '&c'),
+            'choices_as_values' => true,
+            'choice_label' => function ($choice, $label, $value) {
+                if ('&b' === $choice) {
+                    return false;
+                }
+
+                return 'label.'.$value;
+            },
+            'multiple' => false,
+            'expanded' => true,
+        ));
+
+        $this->assertWidgetMatchesXpath($form->createView(), array(),
+'/div
+    [
+        ./div
+            [@class="radio"]
+            [
+                ./label
+                    [.=" [trans]label.&a[/trans]"]
+                    [
+                        ./input[@type="radio"][@name="name"][@id="name_0"][@value="&a"][@checked]
+                    ]
+            ]
+        /following-sibling::div
+            [@class="radio"]
+            [
+                ./label
+                    [
+                        ./input[@type="radio"][@name="name"][@id="name_1"][@value="&b"][not(@checked)]
+                    ]
+            ]
+        /following-sibling::div
+            [@class="radio"]
+            [
+                ./label
+                    [.=" [trans]label.&c[/trans]"]
+                    [
+                        ./input[@type="radio"][@name="name"][@id="name_2"][@value="&c"][not(@checked)]
+                    ]
+            ]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
+    ]
+'
+        );
+    }
+
+    public function testSingleChoiceExpandedWithLabelsSetFalseByCallable()
+    {
+        $form = $this->factory->createNamed('name', 'choice', '&a', array(
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
+            'choice_label' => function () {
+                return false;
+            },
+            'multiple' => false,
+            'expanded' => true,
+        ));
+
+        $this->assertWidgetMatchesXpath($form->createView(), array(),
+'/div
+    [
+        ./div
+            [@class="radio"]
+            [
+                ./label
+                    [
+                        ./input[@type="radio"][@name="name"][@id="name_0"][@value="&a"][@checked]
+                    ]
+            ]
+        /following-sibling::div
+            [@class="radio"]
+            [
+                ./label
+                    [
+                        ./input[@type="radio"][@name="name"][@id="name_1"][@value="&b"][not(@checked)]
+                    ]
+            ]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
+    ]
+'
+        );
+    }
+
+    public function testSingleChoiceExpandedWithoutTranslation()
+    {
+        $form = $this->factory->createNamed('name', 'choice', '&a', array(
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
+            'multiple' => false,
+            'expanded' => true,
+            'choice_translation_domain' => false,
+        ));
+
+        $this->assertWidgetMatchesXpath($form->createView(), array(),
+'/div
+    [
+        ./div
+            [@class="radio"]
+            [
+                ./label
+                    [.=" Choice&A"]
+                    [
+                        ./input[@type="radio"][@name="name"][@id="name_0"][@value="&a"][@checked]
+                    ]
+            ]
+        /following-sibling::div
+            [@class="radio"]
+            [
+                ./label
+                    [.=" Choice&B"]
+                    [
+                        ./input[@type="radio"][@name="name"][@id="name_1"][@value="&b"][not(@checked)]
+                    ]
+            ]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
     ]
 '
         );
@@ -632,7 +853,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoiceExpandedAttributes()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'choice_attr' => array('Choice&B' => array('class' => 'foo&bar')),
             'multiple' => false,
             'expanded' => true,
@@ -647,7 +869,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="radio"]
             [
                 ./label
-                    [.="[trans]Choice&A[/trans]"]
+                    [.=" [trans]Choice&A[/trans]"]
                     [
                         ./input[@type="radio"][@name="name"][@id="name_0"][@value="&a"][@checked]
                     ]
@@ -656,12 +878,12 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="radio"]
             [
                 ./label
-                    [.="[trans]Choice&B[/trans]"]
+                    [.=" [trans]Choice&B[/trans]"]
                     [
                         ./input[@type="radio"][@name="name"][@id="name_1"][@value="&b"][not(@checked)]'.$classPart.'
                     ]
             ]
-        /following-sibling::input[@type="hidden"][@id="name__token"][@class="form-control"]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
     ]
 '
         );
@@ -670,10 +892,12 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoiceExpandedWithPlaceholder()
     {
         $form = $this->factory->createNamed('name', 'choice', '&a', array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
             'multiple' => false,
             'expanded' => true,
             'placeholder' => 'Test&Me',
+            'required' => false,
         ));
 
         $this->assertWidgetMatchesXpath($form->createView(), array(),
@@ -683,7 +907,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="radio"]
             [
                 ./label
-                    [.="[trans]Test&Me[/trans]"]
+                    [.=" [trans]Test&Me[/trans]"]
                     [
                         ./input[@type="radio"][@name="name"][@id="name_placeholder"][not(@checked)]
                     ]
@@ -692,7 +916,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="radio"]
             [
                 ./label
-                    [.="[trans]Choice&A[/trans]"]
+                    [.=" [trans]Choice&A[/trans]"]
                     [
                         ./input[@type="radio"][@name="name"][@id="name_0"][@checked]
                     ]
@@ -701,12 +925,12 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="radio"]
             [
                 ./label
-                    [.="[trans]Choice&B[/trans]"]
+                    [.=" [trans]Choice&B[/trans]"]
                     [
                         ./input[@type="radio"][@name="name"][@id="name_1"][not(@checked)]
                     ]
             ]
-        /following-sibling::input[@type="hidden"][@id="name__token"][@class="form-control"]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
     ]
 '
         );
@@ -715,7 +939,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testSingleChoiceExpandedWithBooleanValue()
     {
         $form = $this->factory->createNamed('name', 'choice', true, array(
-            'choices' => array('1' => 'Choice&A', '0' => 'Choice&B'),
+            'choices' => array('Choice&A' => '1', 'Choice&B' => '0'),
+            'choices_as_values' => true,
             'multiple' => false,
             'expanded' => true,
         ));
@@ -727,7 +952,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="radio"]
             [
                 ./label
-                    [.="[trans]Choice&A[/trans]"]
+                    [.=" [trans]Choice&A[/trans]"]
                     [
                         ./input[@type="radio"][@name="name"][@id="name_0"][@checked]
                     ]
@@ -736,12 +961,12 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="radio"]
             [
                 ./label
-                    [.="[trans]Choice&B[/trans]"]
+                    [.=" [trans]Choice&B[/trans]"]
                     [
                         ./input[@type="radio"][@name="name"][@id="name_1"][not(@checked)]
                     ]
             ]
-        /following-sibling::input[@type="hidden"][@id="name__token"][@class="form-control"]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
     ]
 '
         );
@@ -750,7 +975,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testMultipleChoiceExpanded()
     {
         $form = $this->factory->createNamed('name', 'choice', array('&a', '&c'), array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B', '&c' => 'Choice&C'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b', 'Choice&C' => '&c'),
+            'choices_as_values' => true,
             'multiple' => true,
             'expanded' => true,
             'required' => true,
@@ -763,7 +989,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="checkbox"]
             [
                 ./label
-                    [.="[trans]Choice&A[/trans]"]
+                    [.=" [trans]Choice&A[/trans]"]
                     [
                         ./input[@type="checkbox"][@name="name[]"][@id="name_0"][@checked][not(@required)]
                     ]
@@ -772,7 +998,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="checkbox"]
             [
                 ./label
-                    [.="[trans]Choice&B[/trans]"]
+                    [.=" [trans]Choice&B[/trans]"]
                     [
                         ./input[@type="checkbox"][@name="name[]"][@id="name_1"][not(@checked)][not(@required)]
                     ]
@@ -781,12 +1007,182 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="checkbox"]
             [
                 ./label
-                    [.="[trans]Choice&C[/trans]"]
+                    [.=" [trans]Choice&C[/trans]"]
                     [
                         ./input[@type="checkbox"][@name="name[]"][@id="name_2"][@checked][not(@required)]
                     ]
             ]
-        /following-sibling::input[@type="hidden"][@id="name__token"][@class="form-control"]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
+    ]
+'
+        );
+    }
+
+    public function testMultipleChoiceExpandedWithLabelsAsFalse()
+    {
+        $form = $this->factory->createNamed('name', 'choice', array('&a'), array(
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
+            'choice_label' => false,
+            'multiple' => true,
+            'expanded' => true,
+        ));
+
+        $this->assertWidgetMatchesXpath($form->createView(), array(),
+'/div
+    [
+        ./div
+            [@class="checkbox"]
+            [
+                ./label
+                    [
+                        ./input[@type="checkbox"][@name="name[]"][@id="name_0"][@value="&a"][@checked]
+                    ]
+            ]
+        /following-sibling::div
+            [@class="checkbox"]
+            [
+                ./label
+                    [
+                        ./input[@type="checkbox"][@name="name[]"][@id="name_1"][@value="&b"][not(@checked)]
+                    ]
+            ]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
+    ]
+'
+        );
+    }
+
+    public function testMultipleChoiceExpandedWithLabelsSetByCallable()
+    {
+        $form = $this->factory->createNamed('name', 'choice', array('&a'), array(
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b', 'Choice&C' => '&c'),
+            'choices_as_values' => true,
+            'choice_label' => function ($choice, $label, $value) {
+                if ('&b' === $choice) {
+                    return false;
+                }
+
+                return 'label.'.$value;
+            },
+            'multiple' => true,
+            'expanded' => true,
+        ));
+
+        $this->assertWidgetMatchesXpath($form->createView(), array(),
+            '/div
+    [
+        ./div
+            [@class="checkbox"]
+            [
+                ./label
+                    [.=" [trans]label.&a[/trans]"]
+                    [
+                        ./input[@type="checkbox"][@name="name[]"][@id="name_0"][@value="&a"][@checked]
+                    ]
+            ]
+        /following-sibling::div
+            [@class="checkbox"]
+            [
+                ./label
+                    [
+                        ./input[@type="checkbox"][@name="name[]"][@id="name_1"][@value="&b"][not(@checked)]
+                    ]
+            ]
+        /following-sibling::div
+            [@class="checkbox"]
+            [
+                ./label
+                    [.=" [trans]label.&c[/trans]"]
+                    [
+                        ./input[@type="checkbox"][@name="name[]"][@id="name_2"][@value="&c"][not(@checked)]
+                    ]
+            ]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
+    ]
+'
+        );
+    }
+
+    public function testMultipleChoiceExpandedWithLabelsSetFalseByCallable()
+    {
+        $form = $this->factory->createNamed('name', 'choice', array('&a'), array(
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b'),
+            'choices_as_values' => true,
+            'choice_label' => function () {
+                return false;
+            },
+            'multiple' => true,
+            'expanded' => true,
+        ));
+
+        $this->assertWidgetMatchesXpath($form->createView(), array(),
+'/div
+    [
+        ./div
+            [@class="checkbox"]
+            [
+                ./label
+                    [
+                        ./input[@type="checkbox"][@name="name[]"][@id="name_0"][@value="&a"][@checked]
+                    ]
+            ]
+        /following-sibling::div
+            [@class="checkbox"]
+            [
+                ./label
+                    [
+                        ./input[@type="checkbox"][@name="name[]"][@id="name_1"][@value="&b"][not(@checked)]
+                    ]
+            ]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
+    ]
+'
+        );
+    }
+
+    public function testMultipleChoiceExpandedWithoutTranslation()
+    {
+        $form = $this->factory->createNamed('name', 'choice', array('&a', '&c'), array(
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b', 'Choice&C' => '&c'),
+            'choices_as_values' => true,
+            'multiple' => true,
+            'expanded' => true,
+            'required' => true,
+            'choice_translation_domain' => false,
+        ));
+
+        $this->assertWidgetMatchesXpath($form->createView(), array(),
+'/div
+    [
+        ./div
+            [@class="checkbox"]
+            [
+                ./label
+                    [.=" Choice&A"]
+                    [
+                        ./input[@type="checkbox"][@name="name[]"][@id="name_0"][@checked][not(@required)]
+                    ]
+            ]
+        /following-sibling::div
+            [@class="checkbox"]
+            [
+                ./label
+                    [.=" Choice&B"]
+                    [
+                        ./input[@type="checkbox"][@name="name[]"][@id="name_1"][not(@checked)][not(@required)]
+                    ]
+            ]
+        /following-sibling::div
+            [@class="checkbox"]
+            [
+                ./label
+                    [.=" Choice&C"]
+                    [
+                        ./input[@type="checkbox"][@name="name[]"][@id="name_2"][@checked][not(@required)]
+                    ]
+            ]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
     ]
 '
         );
@@ -795,7 +1191,8 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     public function testMultipleChoiceExpandedAttributes()
     {
         $form = $this->factory->createNamed('name', 'choice', array('&a', '&c'), array(
-            'choices' => array('&a' => 'Choice&A', '&b' => 'Choice&B', '&c' => 'Choice&C'),
+            'choices' => array('Choice&A' => '&a', 'Choice&B' => '&b', 'Choice&C' => '&c'),
+            'choices_as_values' => true,
             'choice_attr' => array('Choice&B' => array('class' => 'foo&bar')),
             'multiple' => true,
             'expanded' => true,
@@ -811,7 +1208,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="checkbox"]
             [
                 ./label
-                    [.="[trans]Choice&A[/trans]"]
+                    [.=" [trans]Choice&A[/trans]"]
                     [
                         ./input[@type="checkbox"][@name="name[]"][@id="name_0"][@checked][not(@required)]
                     ]
@@ -820,7 +1217,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="checkbox"]
             [
                 ./label
-                    [.="[trans]Choice&B[/trans]"]
+                    [.=" [trans]Choice&B[/trans]"]
                     [
                         ./input[@type="checkbox"][@name="name[]"][@id="name_1"][not(@checked)][not(@required)]'.$classPart.'
                     ]
@@ -829,12 +1226,12 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
             [@class="checkbox"]
             [
                 ./label
-                    [.="[trans]Choice&C[/trans]"]
+                    [.=" [trans]Choice&C[/trans]"]
                     [
                         ./input[@type="checkbox"][@name="name[]"][@id="name_2"][@checked][not(@required)]
                     ]
             ]
-        /following-sibling::input[@type="hidden"][@id="name__token"][@class="form-control"]
+        /following-sibling::input[@type="hidden"][@id="name__token"]
     ]
 '
         );
@@ -1278,17 +1675,17 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
         ./select
             [@id="name_month"]
             [@class="form-control"]
-            [./option[@value=""][not(@selected)][not(@disabled)][.="[trans][/trans]"]]
+            [./option[@value=""][not(@selected)][not(@disabled)][.=""]]
             [./option[@value="1"][@selected="selected"]]
         /following-sibling::select
             [@id="name_day"]
             [@class="form-control"]
-            [./option[@value=""][not(@selected)][not(@disabled)][.="[trans][/trans]"]]
+            [./option[@value=""][not(@selected)][not(@disabled)][.=""]]
             [./option[@value="1"][@selected="selected"]]
         /following-sibling::select
             [@id="name_year"]
             [@class="form-control"]
-            [./option[@value=""][not(@selected)][not(@disabled)][.="[trans][/trans]"]]
+            [./option[@value=""][not(@selected)][not(@disabled)][.=""]]
             [./option[@value="1950"][@selected="selected"]]
     ]
     [count(./select)=3]
@@ -1336,7 +1733,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
 '/input
     [@type="hidden"]
     [@name="name"]
-    [@class="my&class form-control"]
+    [@class="my&class"]
     [@value="foo&bar"]
 '
         );

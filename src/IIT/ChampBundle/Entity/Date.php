@@ -95,4 +95,10 @@ class Date
     {
         return $this->idcalendrier;
     }
+    
+    public function __toString() {
+        $this->date." ";
+    }
+
+    
 }

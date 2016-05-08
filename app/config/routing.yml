@@ -6,3 +6,10 @@ iit_champ:
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+    
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+ 
+home_root:
+    pattern : /index
+    defaults: { _controller: IITChampBundle:Joueur:home} 

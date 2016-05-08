@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/var/www/html/ChampionnatProject/composer.json</file>
+            <file>file:/var/www/html/ChampionnatProject/vendor/composer/autoload_psr4.php</file>
+            <file>file:/var/www/html/ChampionnatProject/app/config/config_test.yml</file>
+            <file>file:/var/www/html/ChampionnatProject/app/config/parameters.yml.dist</file>
+            <file>file:/var/www/html/ChampionnatProject/app/console</file>
+            <file>file:/var/www/html/ChampionnatProject/src/IIT/ChampBundle/Resources/config/services.xml</file>
+            <file>file:/var/www/html/ChampionnatProject/app/AppKernel.php</file>
+            <file>file:/var/www/html/ChampionnatProject/src/IIT/ChampBundle/Entity/Partie.php</file>
+            <file>file:/var/www/html/ChampionnatProject/app/config/config_prod.yml</file>
+            <file>file:/var/www/html/ChampionnatProject/app/AppCache.php</file>
+            <file>file:/var/www/html/ChampionnatProject/vendor/composer/autoload_files.php</file>
+            <file>file:/var/www/html/ChampionnatProject/src/IIT/ChampBundle/Entity/User.php</file>
+            <file>file:/var/www/html/ChampionnatProject/src/IIT/ChampBundle/Entity/Joueur.php</file>
+            <file>file:/var/www/html/ChampionnatProject/src/IIT/ChampBundle/Controller/HeureController.php</file>
+            <file>file:/var/www/html/ChampionnatProject/src/IIT/ChampBundle/Controller/EquipeController.php</file>
+            <file>file:/var/www/html/ChampionnatProject/vendor/composer/autoload_classmap.php</file>
+            <file>file:/var/www/html/ChampionnatProject/app/config/security.yml</file>
+            <file>file:/var/www/html/ChampionnatProject/app/autoload.php</file>
+            <file>file:/var/www/html/ChampionnatProject/src/IIT/ChampBundle/Entity/Heure.php</file>
+            <file>file:/var/www/html/ChampionnatProject/app/config/routing.yml</file>
+            <file>file:/var/www/html/ChampionnatProject/app/config/config.yml</file>
+            <file>file:/var/www/html/ChampionnatProject/app/config/services.yml</file>
+            <file>file:/var/www/html/ChampionnatProject/vendor/composer/autoload_real.php</file>
+            <file>file:/var/www/html/ChampionnatProject/app/config/parameters.yml</file>
+            <file>file:/var/www/html/ChampionnatProject/vendor/composer/installed.json</file>
+            <file>file:/var/www/html/ChampionnatProject/app/config/config_dev.yml</file>
+            <file>file:/var/www/html/ChampionnatProject/src/IIT/ChampBundle/Controller/JoueurController.php</file>
+            <file>file:/var/www/html/ChampionnatProject/app/config/routing_dev.yml</file>
+        </group>
+    </open-files>
+</project-private>

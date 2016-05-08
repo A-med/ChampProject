@@ -122,4 +122,9 @@ class Equipe
     {
         return $this->id;
     }
+    
+    public function __toString() {
+        return $this->designation;
+    }
+
 }

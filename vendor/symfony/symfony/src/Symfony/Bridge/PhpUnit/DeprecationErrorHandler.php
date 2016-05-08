@@ -12,7 +12,7 @@
 namespace Symfony\Bridge\PhpUnit;
 
 /**
- * Catch deprecation notices and print a summary report at the end of the test suite
+ * Catch deprecation notices and print a summary report at the end of the test suite.
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -25,23 +25,41 @@ class DeprecationErrorHandler
         if (self::$isRegistered) {
             return;
         }
+
+        $getMode = function () use ($mode) {
+            static $memoizedMode = false;
+
+            if (false !== $memoizedMode) {
+                return $memoizedMode;
+            }
+            if (false === $mode) {
+                $mode = getenv('SYMFONY_DEPRECATIONS_HELPER') ?: '';
+            }
+
+            return $memoizedMode = $mode;
+        };
+
         $deprecations = array(
+            'unsilencedCount' => 0,
             'remainingCount' => 0,
             'legacyCount' => 0,
             'otherCount' => 0,
+            'unsilenced' => array(),
             'remaining' => array(),
             'legacy' => array(),
             'other' => array(),
         );
-        $deprecationHandler = function ($type, $msg, $file, $line, $context) use (&$deprecations, $mode) {
+        $deprecationHandler = function ($type, $msg, $file, $line, $context) use (&$deprecations, $getMode) {
             if (E_USER_DEPRECATED !== $type) {
                 return \PHPUnit_Util_ErrorHandler::handleError($type, $msg, $file, $line, $context);
             }
 
-            $trace = debug_backtrace(PHP_VERSION_ID >= 50400 ? DEBUG_BACKTRACE_IGNORE_ARGS | DEBUG_BACKTRACE_PROVIDE_OBJECT : true);
+            $mode = $getMode();
+            $trace = debug_backtrace(true);
+            $group = 'other';
 
             $i = count($trace);
-            while (isset($trace[--$i]['class']) && ('ReflectionMethod' === $trace[$i]['class'] || 0 === strpos($trace[$i]['class'], 'PHPUnit_'))) {
+            while (1 < $i && (!isset($trace[--$i]['class']) || ('ReflectionMethod' === $trace[$i]['class'] || 0 === strpos($trace[$i]['class'], 'PHPUnit_')))) {
                 // No-op
             }
 
@@ -49,17 +67,27 @@ class DeprecationErrorHandler
                 $class = isset($trace[$i]['object']) ? get_class($trace[$i]['object']) : $trace[$i]['class'];
                 $method = $trace[$i]['function'];
 
-                $group = 0 === strpos($method, 'testLegacy') || 0 === strpos($method, 'provideLegacy') || 0 === strpos($method, 'getLegacy') || strpos($class, '\Legacy') || in_array('legacy', \PHPUnit_Util_Test::getGroups($class, $method), true) ? 'legacy' : 'remaining';
+                if (0 !== error_reporting()) {
+                    $group = 'unsilenced';
+                } elseif (0 === strpos($method, 'testLegacy')
+                    || 0 === strpos($method, 'provideLegacy')
+                    || 0 === strpos($method, 'getLegacy')
+                    || strpos($class, '\Legacy')
+                    || in_array('legacy', \PHPUnit_Util_Test::getGroups($class, $method), true)
+                ) {
+                    $group = 'legacy';
+                } else {
+                    $group = 'remaining';
+                }
 
                 if ('legacy' !== $group && 'weak' !== $mode) {
-                    $ref =& $deprecations[$group][$msg]['count'];
+                    $ref = &$deprecations[$group][$msg]['count'];
                     ++$ref;
-                    $ref =& $deprecations[$group][$msg][$class.'::'.$method];
+                    $ref = &$deprecations[$group][$msg][$class.'::'.$method];
                     ++$ref;
                 }
-            } else {
-                $group = 'other';
-                $ref =& $deprecations[$group][$msg]['count'];
+            } elseif ('weak' !== $mode) {
+                $ref = &$deprecations[$group][$msg]['count'];
                 ++$ref;
             }
             ++$deprecations[$group.'Count'];
@@ -83,10 +111,14 @@ class DeprecationErrorHandler
             } else {
                 $colorize = function ($str) {return $str;};
             }
-            register_shutdown_function(function () use ($mode, &$deprecations, $deprecationHandler, $colorize) {
+            register_shutdown_function(function () use ($getMode, &$deprecations, $deprecationHandler, $colorize) {
+                $mode = $getMode();
                 $currErrorHandler = set_error_handler('var_dump');
                 restore_error_handler();
 
+                if ('weak' === $mode) {
+                    $colorize = function ($str) {return $str;};
+                }
                 if ($currErrorHandler !== $deprecationHandler) {
                     echo "\n", $colorize('THE ERROR HANDLER HAS CHANGED!', true), "\n";
                 }
@@ -95,7 +127,7 @@ class DeprecationErrorHandler
                     return $b['count'] - $a['count'];
                 };
 
-                foreach (array('remaining', 'legacy', 'other') as $group) {
+                foreach (array('unsilenced', 'remaining', 'legacy', 'other') as $group) {
                     if ($deprecations[$group.'Count']) {
                         echo "\n", $colorize(sprintf('%s deprecation notices (%d)', ucfirst($group), $deprecations[$group.'Count']), 'legacy' !== $group), "\n";
 
@@ -117,7 +149,8 @@ class DeprecationErrorHandler
                 if (!empty($notices)) {
                     echo "\n";
                 }
-                if ('weak' !== $mode && ($deprecations['remaining'] || $deprecations['other'])) {
+
+                if ('weak' !== $mode && ($deprecations['unsilenced'] || $deprecations['remaining'] || $deprecations['other'])) {
                     exit(1);
                 }
             });
@@ -127,7 +160,11 @@ class DeprecationErrorHandler
     private static function hasColorSupport()
     {
         if ('\\' === DIRECTORY_SEPARATOR) {
-            return false !== getenv('ANSICON') || 'ON' === getenv('ConEmuANSI');
+            return
+                0 >= version_compare('10.0.10586', PHP_WINDOWS_VERSION_MAJOR.'.'.PHP_WINDOWS_VERSION_MINOR.'.'.PHP_WINDOWS_VERSION_BUILD)
+                || false !== getenv('ANSICON')
+                || 'ON' === getenv('ConEmuANSI')
+                || 'xterm' === getenv('TERM');
         }
 
         return defined('STDOUT') && function_exists('posix_isatty') && @posix_isatty(STDOUT);
