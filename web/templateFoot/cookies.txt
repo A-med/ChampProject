@@ -1,0 +1,8 @@
+# HTTrack Website Copier Cookie File
+# This file format is compatible with Netscape cookies
+champion.stylemixthemes.com	TRUE	/	FALSE	1999999999	wordpress_test_cookie	WP+Cookie+check
+cdn.champion.stylemixthemes.com	TRUE	/	FALSE	1999999999	_icl_current_language	en
+cdn.champion.stylemixthemes.com	TRUE	/	FALSE	1999999999	woocommerce_items_in_cart	1
+cdn.champion.stylemixthemes.com	TRUE	/	FALSE	1999999999	woocommerce_cart_hash	c2398c854d8dd873db8c49318ecc08da
+cdn.champion.stylemixthemes.com	TRUE	/	FALSE	1999999999	wp_woocommerce_session_09fa8b5f2f29cc9e54caa219daa7603e	1d2a65d96088bb889a2d668caf0e1b9e%7C%7C1462754763%7C%7C1462751163%7C%7C179f5442603ce145f10ff38ccaff6bd3
+

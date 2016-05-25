@@ -1,0 +1,27 @@
+/*
+    Theme Name: Champion
+    Theme URI: http://champion.stylemixthemes.com/
+    Author: StylemixThemes
+    Author URI: http://stylemixthemes.com/
+    Description: Champion was created especially for sport clubs, football clubs, soccer news and sport organizations. The responsive layout is designed based on the Bootstrap 3.1 standards. Champion was built on Visual Composer Page Builder, which is included into the theme. Using Visual Composer you can easily create the pages in Front- or Back-end with 60+ modules.
+    Version: 2.0
+    License: GNU General Public License v2 or later
+    License URI: http://www.gnu.org/licenses/gpl-2.0.html
+    Tags: champion, responsive, sport, soccer, football, sport club, club, wordpress, wp, fixtures, events, match
+    Text Domain: champion
+
+    This theme, like WordPress, is licensed under the GPL.
+    Use it to make something cool, have fun, and share what you've learned with others.
+*/
+
+@import "assets/css/normalize.css";
+@import "assets/css/bootstrap.min.css";
+@import "assets/css/style.css";
+@import "assets/css/font-awesome.min.css";
+@import "assets/css/select2.css";
+@import "assets/css/jquery.fancybox.css";
+@import "assets/css/owl.carousel.css";
+@import "inc/customizer/customizer.css";
+@import "inc/vc/assets/css/vc_next_match.css";
+@import "inc/vc/assets/css/vc_upcoming_fixtures.css";
+@import "assets/css/mobile.css";
