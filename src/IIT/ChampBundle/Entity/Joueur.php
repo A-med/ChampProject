@@ -1,17 +1,25 @@
 <?php
 
 namespace IIT\ChampBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Joueur
  *
  * @ORM\Table(name="joueur", indexes={@ORM\Index(name="idEquipe", columns={"idEquipe"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="IIT\ChampBundle\Entity\JoueurRepository")
  */
 class Joueur
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
     /**
      * @var string
      *
@@ -62,18 +70,9 @@ class Joueur
     private $image;
 
     /**
-     * @var integer
+     * @var \Equipe
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    /**
-     * @var \IIT\ChampBundle\Entity\Equipe
-     *
-     * @ORM\ManyToOne(targetEntity="IIT\ChampBundle\Entity\Equipe")
+     * @ORM\ManyToOne(targetEntity="Equipe")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idEquipe", referencedColumnName="id")
      * })
@@ -256,10 +255,10 @@ class Joueur
     /**
      * Set idequipe
      *
-     * @param \IIT\ChampBundle\Entity\Equipe $idequipe
+     * @param \IIT\IhmBundle\Entity\Equipe $idequipe
      * @return Joueur
      */
-    public function setIdequipe(\IIT\ChampBundle\Entity\Equipe $idequipe = null)
+    public function setIdequipe(\IIT\IhmBundle\Entity\Equipe $idequipe = null)
     {
         $this->idequipe = $idequipe;
 
@@ -269,15 +268,10 @@ class Joueur
     /**
      * Get idequipe
      *
-     * @return \IIT\ChampBundle\Entity\Equipe 
+     * @return \IIT\IhmBundle\Entity\Equipe 
      */
     public function getIdequipe()
     {
         return $this->idequipe;
     }
-    
-    public function __toString() {
-        return $this->nom." ".$this->prenom;
-    }
-
 }

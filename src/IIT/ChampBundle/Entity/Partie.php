@@ -15,36 +15,26 @@ class Partie
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var \IIT\ChampBundle\Entity\Date
+     * @var \Equipe
      *
-     * @ORM\ManyToOne(targetEntity="IIT\ChampBundle\Entity\Date")
+     * @ORM\ManyToOne(targetEntity="Equipe")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idDate", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="idEquipe2", referencedColumnName="id")
      * })
      */
-    private $iddate;
+    private $idequipe2;
 
     /**
-     * @var \IIT\ChampBundle\Entity\Competition
+     * @var \Stade
      *
-     * @ORM\ManyToOne(targetEntity="IIT\ChampBundle\Entity\Competition")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idCompetition", referencedColumnName="id")
-     * })
-     */
-    private $idcompetition;
-
-    /**
-     * @var \IIT\ChampBundle\Entity\Stade
-     *
-     * @ORM\ManyToOne(targetEntity="IIT\ChampBundle\Entity\Stade")
+     * @ORM\ManyToOne(targetEntity="Stade")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idStade", referencedColumnName="id")
      * })
@@ -52,16 +42,37 @@ class Partie
     private $idstade;
 
     /**
-     * @var \IIT\ChampBundle\Entity\Equipe
+     * @var \Competition
      *
-     * @ORM\ManyToOne(targetEntity="IIT\ChampBundle\Entity\Equipe")
+     * @ORM\ManyToOne(targetEntity="Competition")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idEquipe", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="idCompetition", referencedColumnName="id")
      * })
      */
-    private $idequipe;
+    private $idcompetition;
 
+    /**
+     * @var \Date
+     *
+     * @ORM\ManyToOne(targetEntity="Date")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idDate", referencedColumnName="id")
+     * })
+     */
+    private $iddate;
 
+    /**
+     * @var \Equipe
+     *
+     * @ORM\ManyToOne(targetEntity="Equipe")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idEquipe1", referencedColumnName="id")
+     * })
+     */
+    private $idequipe1;
+
+    
+    
 
     /**
      * Get id
@@ -72,7 +83,9 @@ class Partie
     {
         return $this->id;
     }
+     
 
+private $descr ;
     /**
      * Set iddate
      *
@@ -145,12 +158,12 @@ class Partie
     /**
      * Set idequipe
      *
-     * @param \IIT\ChampBundle\Entity\Equipe $idequipe
+     * @param \IIT\ChampBundle\Entity\Equipe $idequipe1
      * @return Partie
      */
-    public function setIdequipe(\IIT\ChampBundle\Entity\Equipe $idequipe = null)
+    public function setIdequipe1(\IIT\ChampBundle\Entity\Equipe $idequipe1 = null)
     {
-        $this->idequipe = $idequipe;
+        $this->idequipe1 = $idequipe1;
 
         return $this;
     }
@@ -160,8 +173,35 @@ class Partie
      *
      * @return \IIT\ChampBundle\Entity\Equipe 
      */
-    public function getIdequipe()
+    public function getIdequipe1()
     {
-        return $this->idequipe;
+        return $this->idequipe1;
     }
+    
+    
+        /**
+     * Set idequipe
+     *
+     * @param \IIT\ChampBundle\Entity\Equipe $idequipe2
+     * @return Partie
+     */
+    public function setIdequipe2(\IIT\ChampBundle\Entity\Equipe $idequipe2 = null)
+    {
+        $this->idequipe2 = $idequipe2;
+
+        return $this;
+    }
+
+    /**
+     * Get idequipe
+     *
+     * @return \IIT\ChampBundle\Entity\Equipe 
+     */
+    public function getIdequipe2()
+    {
+        return $this->idequipe2;
+    }
+    
+   
+
 }

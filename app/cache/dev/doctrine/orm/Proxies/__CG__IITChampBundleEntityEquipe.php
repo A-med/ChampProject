@@ -64,10 +64,10 @@ class Equipe extends \IIT\ChampBundle\Entity\Equipe implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'designation', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'adresselocal', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'typeequipe', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'id'];
+            return ['__isInitialized__', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'id', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'designation', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'adresselocal', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'typeequipe', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'j', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'g', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'n', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'p', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'logo'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'designation', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'adresselocal', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'typeequipe', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'id'];
+        return ['__isInitialized__', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'id', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'designation', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'adresselocal', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'typeequipe', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'j', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'g', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'n', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'p', '' . "\0" . 'IIT\\ChampBundle\\Entity\\Equipe' . "\0" . 'logo'];
     }
 
     /**
@@ -237,6 +237,116 @@ class Equipe extends \IIT\ChampBundle\Entity\Equipe implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTypeequipe', []);
 
         return parent::getTypeequipe();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getJ()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJ', []);
+
+        return parent::getJ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getG()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getG', []);
+
+        return parent::getG();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getN()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getN', []);
+
+        return parent::getN();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getP()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getP', []);
+
+        return parent::getP();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLogo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLogo', []);
+
+        return parent::getLogo();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setJ($j)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJ', [$j]);
+
+        return parent::setJ($j);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setG($g)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setG', [$g]);
+
+        return parent::setG($g);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setN($n)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setN', [$n]);
+
+        return parent::setN($n);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setP($p)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setP', [$p]);
+
+        return parent::setP($p);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLogo($logo)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLogo', [$logo]);
+
+        return parent::setLogo($logo);
     }
 
     /**

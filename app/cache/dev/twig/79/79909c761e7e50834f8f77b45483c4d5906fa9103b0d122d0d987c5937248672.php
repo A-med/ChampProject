@@ -21,20 +21,20 @@ class __TwigTemplate_110eeab7fb27dce9eb21463b6d3aa213e6dc417e811f52088e1749e6a8e
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_887cb07e370a37df65258396bf27efe081c31cd6957a9fc445479e9ad7c75de2 = $this->env->getExtension("native_profiler");
-        $__internal_887cb07e370a37df65258396bf27efe081c31cd6957a9fc445479e9ad7c75de2->enter($__internal_887cb07e370a37df65258396bf27efe081c31cd6957a9fc445479e9ad7c75de2_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "IITChampBundle:Home:home.html.twig"));
+        $__internal_77e3a80eebfcf6fc65e03c25ac7011ebb8b6d14b1330f0cd547433c48d0b95a5 = $this->env->getExtension("native_profiler");
+        $__internal_77e3a80eebfcf6fc65e03c25ac7011ebb8b6d14b1330f0cd547433c48d0b95a5->enter($__internal_77e3a80eebfcf6fc65e03c25ac7011ebb8b6d14b1330f0cd547433c48d0b95a5_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "IITChampBundle:Home:home.html.twig"));
 
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
-        $__internal_887cb07e370a37df65258396bf27efe081c31cd6957a9fc445479e9ad7c75de2->leave($__internal_887cb07e370a37df65258396bf27efe081c31cd6957a9fc445479e9ad7c75de2_prof);
+        $__internal_77e3a80eebfcf6fc65e03c25ac7011ebb8b6d14b1330f0cd547433c48d0b95a5->leave($__internal_77e3a80eebfcf6fc65e03c25ac7011ebb8b6d14b1330f0cd547433c48d0b95a5_prof);
 
     }
 
     // line 3
     public function block_body($context, array $blocks = array())
     {
-        $__internal_35c84c9081345487cedd156a3c32a37388241c1c3a43b9f27a45308ee27f0fbe = $this->env->getExtension("native_profiler");
-        $__internal_35c84c9081345487cedd156a3c32a37388241c1c3a43b9f27a45308ee27f0fbe->enter($__internal_35c84c9081345487cedd156a3c32a37388241c1c3a43b9f27a45308ee27f0fbe_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
+        $__internal_20089e67336192e730018da0e05e039dcbae59a15ee1837bfd898cfa8ed6eb33 = $this->env->getExtension("native_profiler");
+        $__internal_20089e67336192e730018da0e05e039dcbae59a15ee1837bfd898cfa8ed6eb33->enter($__internal_20089e67336192e730018da0e05e039dcbae59a15ee1837bfd898cfa8ed6eb33_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
 
         // line 4
         echo "<h1>Joueur list</h1>
@@ -381,10 +381,10 @@ class __TwigTemplate_110eeab7fb27dce9eb21463b6d3aa213e6dc417e811f52088e1749e6a8e
         echo "        </tbody>
     </table>
         
-        AASA
+        
     ";
         
-        $__internal_35c84c9081345487cedd156a3c32a37388241c1c3a43b9f27a45308ee27f0fbe->leave($__internal_35c84c9081345487cedd156a3c32a37388241c1c3a43b9f27a45308ee27f0fbe_prof);
+        $__internal_20089e67336192e730018da0e05e039dcbae59a15ee1837bfd898cfa8ed6eb33->leave($__internal_20089e67336192e730018da0e05e039dcbae59a15ee1837bfd898cfa8ed6eb33_prof);
 
     }
 
@@ -585,6 +585,6 @@ class __TwigTemplate_110eeab7fb27dce9eb21463b6d3aa213e6dc417e811f52088e1749e6a8e
 /*         </tbody>*/
 /*     </table>*/
 /*         */
-/*         AASA*/
+/*         */
 /*     {% endblock %}*/
 /* */

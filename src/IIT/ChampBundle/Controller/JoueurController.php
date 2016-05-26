@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use IIT\ChampBundle\Entity\Joueur;
 use IIT\ChampBundle\Form\JoueurType;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+
 /**
  * Joueur controller.
  *
@@ -29,7 +29,7 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('IITChampBundle:Joueur')->findAll();
+        $entities = $em->getRepository('IITIhmBundle:Joueur')->findAll();
 
         return array(
             'entities' => $entities,
@@ -40,22 +40,15 @@ class JoueurController extends Controller
      *
      * @Route("/", name="joueur_create")
      * @Method("POST")
-     * @Template("IITChampBundle:Joueur:new.html.twig")
+     * @Template("IITIhmBundle:Joueur:new.html.twig")
      */
     public function createAction(Request $request)
-    {   $tab = explode(',',$_FILES['iit_champbundle_joueur']['name']['image']);
-        $ext = $tab[count($tab)-1];
+    {
         $entity = new Joueur();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-             $file = $entity->getImage();
-            $fileName = md5(uniqid()).'.'.$ext;
-            
-            $photoDir = $this->container->getParameter('kernel.root_dir').'/../web/uploads';
-            $file->move($photoDir,$fileName);
-            $entity->setImage($fileName);
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -68,9 +61,7 @@ class JoueurController extends Controller
             'form'   => $form->createView(),
         );
     }
- 
- 
- 
+
     /**
      * Creates a form to create a Joueur entity.
      *
@@ -119,7 +110,7 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('IITChampBundle:Joueur')->find($id);
+        $entity = $em->getRepository('IITIhmBundle:Joueur')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Joueur entity.');
@@ -144,7 +135,7 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('IITChampBundle:Joueur')->find($id);
+        $entity = $em->getRepository('IITIhmBundle:Joueur')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Joueur entity.');
@@ -183,13 +174,13 @@ class JoueurController extends Controller
      *
      * @Route("/{id}", name="joueur_update")
      * @Method("PUT")
-     * @Template("IITChampBundle:Joueur:edit.html.twig")
+     * @Template("IITIhmBundle:Joueur:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('IITChampBundle:Joueur')->find($id);
+        $entity = $em->getRepository('IITIhmBundle:Joueur')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Joueur entity.');
@@ -224,7 +215,7 @@ class JoueurController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('IITChampBundle:Joueur')->find($id);
+            $entity = $em->getRepository('IITIhmBundle:Joueur')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Joueur entity.');
@@ -254,18 +245,9 @@ class JoueurController extends Controller
         ;
     }
     
-    
-       /**
-     * Lists all Joueur entities.
-     *
-     * @Route("/index", name="home_root")
-     * @Method("GET")
-     * @Template("IITChampBundle:Home:home.html.twig")
-     */
-    
         public function homeAction()
     {
-       
+       $id=3;
         $em = $this->getDoctrine()->getManager();
 
         $joueurs = $em->getRepository('IITChampBundle:Joueur')->findAll();
@@ -273,10 +255,24 @@ class JoueurController extends Controller
         $resultat = $em->getRepository('IITChampBundle:Resultat')->findAll();
         $partie = $em->getRepository('IITChampBundle:Partie')->findAll();
          $calandrier = $em->getRepository('IITChampBundle:Calendrier')->findAll();
-        return array(
+           $equipe = $em->getRepository('IITChampBundle:Equipe')->findAll();
+              $players = $em->getRepository("IITChampBundle:Joueur")
+                ->showPlayers($id);
+           return($this->render("IITChampBundle:Home:home.html.twig",array(
             'joueurs' => $joueurs,'competitions' => $competition,'resultats' => $resultat,
-            'parties' => $partie,'calendrier'=>$calandrier
-        );
-      
+            'parties' => $partie,'calendrier'=>$calandrier,'equipe'=>$equipe,"players" => $players
+        )));
+        
+    }
+    
+    
+       public function getPlayerByTeamAction($id) {
+        $em = $this->getDoctrine()->getManager();
+ 
+        $players = $em->getRepository("IITChampBundle:Joueur")
+                ->showPlayers($id);
+               
+        return($this->render("IITChampBundle:Home:teams.html.twig", array("players" => $players)));
     }
 }
+

@@ -13,3 +13,11 @@ fos_user:
 home_root:
     pattern : /index
     defaults: { _controller: IITChampBundle:Joueur:home} 
+    
+
+    
+players_team:
+    pattern : /index/{id}
+    defaults: { _controller: IITChampBundle:Joueur:getPlayerByTeam}
+    
+   
